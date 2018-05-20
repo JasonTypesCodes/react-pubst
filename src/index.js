@@ -40,10 +40,10 @@ function pubstWrappedComponentBuilder(componentToWrap, subMap) {
     }
 
     render() {
-      const newProps = {
-        ...this.props,
-        ...this.state
-      };
+      const newProps = {};
+      Object.keys(this.props).forEach(prop => newProps[props] = this.props[prop]);
+      Object.keys(this.state).forEach(key => newProps[key] = this.state[key]);
+      console.log('Rendering: ', newProps);
       return createElement(this.wrapped, newProps);
     }
   }
@@ -51,6 +51,6 @@ function pubstWrappedComponentBuilder(componentToWrap, subMap) {
   return PubstWrappedComponent;
 }
 
-export default {
-  subsciber: wrappedComponentBuilder
-};
+export function subscriber(componentToWrap, subMap) {
+  return pubstWrappedComponentBuilder(componentToWrap, subMap);
+}

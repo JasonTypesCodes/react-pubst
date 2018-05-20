@@ -21,13 +21,12 @@
     "url": "https://github.com/VoltiSubito/react-pubst/issues"
   },
   "homepage": "https://github.com/VoltiSubito/react-pubst#readme",
-  "dependencies": {
-    "pubst": "0.2.1"
-  },
   "devDependencies": {
+    "pubst": "0.2.1",
     "react": "16.0.0"
   },
   "peerDependencies": {
+    "pubst": "0.2.x",
     "react": "16.x.x"
   }
 }
