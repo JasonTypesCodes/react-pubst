@@ -1,0 +1,33 @@
+{
+  "name": "react-pubst",
+  "version": "0.0.1",
+  "description": "Utilities for creating Pubst-aware React components.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VoltiSubito/react-pubst.git"
+  },
+  "keywords": [
+    "React",
+    "Pubst",
+    "Wrapper"
+  ],
+  "author": "Jason Schindler",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/VoltiSubito/react-pubst/issues"
+  },
+  "homepage": "https://github.com/VoltiSubito/react-pubst#readme",
+  "dependencies": {
+    "pubst": "0.2.1"
+  },
+  "devDependencies": {
+    "react": "16.0.0"
+  },
+  "peerDependencies": {
+    "react": "16.x.x"
+  }
+}
