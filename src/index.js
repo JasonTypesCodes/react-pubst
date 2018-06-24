@@ -2,6 +2,13 @@ import {Component, createElement} from 'react';
 
 import pubst from 'pubst';
 
+const DEFAULT_CONFIG = {
+  topic: '',
+  default: undefined,
+  doPrime: true,
+  allowRepeats: false
+};
+
 function pubstWrappedComponentBuilder(componentToWrap, subMap) {
 
   class PubstWrappedComponent extends Component {
@@ -9,8 +16,39 @@ function pubstWrappedComponentBuilder(componentToWrap, subMap) {
       super();
       this.state = {};
 
+      this.subConfigs = {};
+
       Object.keys(subMap).forEach(propName => {
-        this.state[propName] = pubst.currentVal(subMap[propName]);
+        const passedConfig = subMap[propName];
+
+        const subConfig = {};
+        if (typeof passedConfig === 'object') {
+          Object.keys(passedConfig).forEach(configItem => {
+            if (DEFAULT_CONFIG.hasOwnProperty(configItem)) {
+              subConfig[configItem] = passedConfig[configItem];
+            }
+          });
+        } else if (typeof passedConfig === 'string' || passedConfig instanceof RegExp) {
+          subConfig.topic = passedConfig;
+        } else {
+          throw new Error(`Pubst subscriber components must be configured with a string, regular expression, or object.  Received '${passedConfig}' for prop '${propName}'`);
+        }
+
+        Object.keys(DEFAULT_CONFIG).forEach(configItem => {
+          if (!subConfig.hasOwnProperty(configItem)) {
+            subConfig[configItem] = DEFAULT_CONFIG[configItem];
+          }
+        });
+
+        subConfig.handler = (value) => {
+          const stateUpdate = {};
+          stateUpdate[propName] = value;
+          this.setState(stateUpdate);
+        }
+
+        this.subConfigs[propName] = subConfig;
+
+        this.state[propName] = pubst.currentVal(subConfig.topic, subConfig.default);
       });
 
       this.wrapped = componentToWrap;
@@ -19,17 +57,12 @@ function pubstWrappedComponentBuilder(componentToWrap, subMap) {
     }
 
     componentDidMount() {
-      Object.keys(this.subMap).forEach(propName => {
+      Object.keys(this.subConfigs).forEach(propName => {
+        const subConfig = this.subConfigs[propName];
         this.unsubs.push(
           pubst.subscribe(
-            this.subMap[propName],
-            (value) => {
-              if (value !== this.state[propName]) {
-                const stateUpdate = {};
-                stateUpdate[propName] = value;
-                this.setState(stateUpdate);
-              }
-            }
+            subConfig.topic,
+            subConfig
           )
         );
       });

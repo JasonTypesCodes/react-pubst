@@ -1,6 +1,6 @@
 {
   "name": "react-pubst",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Utilities for creating Pubst-aware React components.",
   "main": "src/index.js",
   "scripts": {
